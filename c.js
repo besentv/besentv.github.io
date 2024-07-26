@@ -584,7 +584,7 @@ function keyboard(e) {
         case "3":
             setAreaTo = "L062_SG_Tl";
             break;
-        case "s":
+        case "e":
             setAreaTo = "Settings";
             break;
         case "arrowleft":
@@ -596,9 +596,11 @@ function keyboard(e) {
             changeSetting(1);
             break;
         case "arrowup":
+        case "w":
             changeSelectedSetting(-1);
             break;
         case "arrowdown":
+        case "s":
             changeSelectedSetting(1);
             break;
     }
@@ -612,7 +614,7 @@ document.addEventListener("keydown", keyboard);
 
 const menu = [
     "Keyboard shortcuts:  [1] L001_KO_Zw  [2] L004_Zw_Gr  [3] L062_SG_Tl                                                                                             ",
-    "                     [S]ettings                                                                                     SRTD - SimRail Train Describer - v.24-02-20 ",
+    "                     S[e]ttings                                                                               SRTD - SimRail Train Describer custom - v.24-07-26",
 ];
 
 var layouts = {
