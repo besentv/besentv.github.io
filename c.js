@@ -618,7 +618,7 @@ document.addEventListener("keydown", keyboard);
 
 const menu = [
     "Keyboard shortcuts:  [1] L001_KO_Zw  [2] L004_Zw_Gr  [3] L062_SG_Tl                                                                                             ",
-    "                     S[e]ttings                                                                               SRTD - SimRail Train Describer custom - v.24-07-26",
+    "                     S[e]ttings                                                                               SRTD - SimRail Train Describer custom - v.24-09-12",
 ];
 
 var layouts = {
