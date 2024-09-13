@@ -857,7 +857,7 @@ var layouts = {
         "                                                                                                                                                                ",
         "                                                                                                                                                                ",
         "                                                                                                                                                                ",
-        "                                                              = Use arrow keys to change settings =                                                             ",
+        "                                                         = Use arrow keys or wasd to change settings =                                                          ",
         "                                                                                                                                                                ",
         "                                                                                                                                                                ",
     ]
