@@ -618,7 +618,7 @@ document.addEventListener("keydown", keyboard);
 
 const menu = [
     "Keyboard shortcuts:  [1] L001_KO_Zw  [2] L004_Zw_Gr  [3] L062_SG_Tl                                                                                             ",
-    "                     S[e]ttings                                                                               SRTD - SimRail Train Describer custom - v.24-07-26",
+    "                     S[e]ttings                                                                               SRTD - SimRail Train Describer custom - v.24-09-12",
 ];
 
 var layouts = {
@@ -747,7 +747,7 @@ var layouts = {
         " L062_SG_Tl                           9 ├ {────} ┐                                                                    {────} ┬ 5                                'SG_N9'SG_H9'§'DS_C",
         "                                      7 ├ {────} ┤                                               = SKz=               {────} ┼ 3               = DW =           'SG_N7'SG_H7'§'DS_D",
         "                                      5 ├ {────} ┤                                                  5            1D      1   │                    1             'SG_N5'SG_H5",
-        " = KZ =                               3 ├ {────} ┤                 =  B =                     ┌─ {────} ┐      <F ──┼ {────} ┼─── {────} ────┬ {────} ┼ {────}  'SG_N3'SG_H3'SKz_R'SKz_C'DGHK_N'DS_Z'DS_V'DS_E'DS_A'DW_A'DW_F'DW_R'DW_T'Sl_J",
+        " = KZ =                               3 ├ {────} ┤                 =  B =                     ┌─ {────} ┐      <F ──┼ {────} ┼─── {────} ────┬ {────} ┼ {────}  'SG_N3'SG_H3'SKz_R'SKz_C'DS_V'DS_E'DS_A'DW_A'DW_F'DW_R'DW_T'Sl_J",
         "    1      3133   3121   3111      1c   │    1   │  3071   3065       1      3037             │     1   │           │    2   │               │    2   │       A>",
         " {────} ┬ {────} {────} {────} ┬ {────} ┼ {────} ┼ {────} {────} ┬ {────} ┬ {────}         :──┼─ {────} ┼─ {────} ──┼ {────} ┼─── {────} ────┼ {────} ┼───────  'KZ_K'KZ_D1'KZ_B1'L1_3133N'L1_3133'L1_3121N'L1_3121'SG_X'SG_U1'SG_R1'SG_N1'SG_H1'SG_B'L1_3075N'L1_3071'B_R'B_K1'B_E1'B_B'L1_3037N%B_C'SKz_O'SKz_E'SKz_A'DS_W'DS_U'DS_F'DS_B'DW_B'DW_G'DW_P",
         "    2   │  3148   3138   3128  │   2b   │    2   │  3080   3074  │    2   │  3048          :  │         │           │        │               │    4   │   1K    ",
@@ -760,11 +760,11 @@ var layouts = {
         " {────} ┤                      │            2P   │    2   │                 5              :                                     : :         ├ {────} ┼         'KZ_N6'KZ_F'DW_K10'DW_M10",
         "    8   │                      └───────── {────} ┼ {────} ┤── {────} ──┬ {────} ┬─ {────} ─:                 = Dra=              : :                            'SG_S'SPł1_T'SPł1_K'SPł1_B'SPł1_A'SDn_W'SDn_N'SDn1_D'SDn_A'SKz_S",
         " {────} ┤                                        │    4   │            │    3   │                          1S             1D     : :                            'KZ_N8'KZ_G",
-        "   10   │                       = Sk =           ├ {────} ┼            ┼ {────} ┼             :───────── {────} ┬────── {────} ──: :         <F {────} ┐        'SPł1_L'SPł1_D'SDn_O'SDn1_E'Ju_A'Dra_A'Dra_M'DW_C'DS_Z'DGHK_N",
-        " {────} ┘            {────} {────} ┬ {────}      │    6   │       1S   │    1   │   1J        :            1J   │         1P       :      1            ├   1Z   'KZ_N10'KZ_H'§'§'§'§'§'§",
-        "                                   ┼ {────}      ├ {────} ┼     {────} ┼ {────} ┼ {────} ┬────:          {────} ┼────── {────} ──────┬ {────} ┬ {────} ┼ {────} '§'§'SPł1_M'SPł1_E'Sk_D'SDn_Sz1N'SDn_P'§'SDn_B'Ju_H'§'Dra_B'Dra_L'DP1_M'DP1_J'DP_B1'DP_A'DGHK_M'DGHK_G'DZ_Y",
+        "   10   │                 KJw    = Sk =          ├ {────} ┼            ┼ {────} ┼             :───────── {────} ┬────── {────} ──: :         <F {────} ┐        'SPł1_L'SPł1_D'SDn_O'SDn1_E'Ju_A'Dra_A'Dra_M'DW_C'DS_Z'DGHK_N",
+        " {────} ┘            {────} {────} ┬ {────}      │    6   │       1S   │    1   │   1J        :            1J   │         1P       :      1            ├   1Z   'KZ_N10'KZ_H'KMB_M'§'KJw_A'§'§'§",
+        "                                   ┼ {────}      ├ {────} ┼     ───────┼ {────} ┼ {────} ┬────:          {────} ┼────── {────} ──────┬ {────} ┬ {────} ┼ {────} 'Sk_D'SDn_Sz1N'SPł1_M'SPł1_E'SDn_P'§'SDn_B'Ju_H'§'Dra_B'Dra_L'DP1_M'DP1_J'DP_B1'DP_A'DGHK_M'DGHK_G'DZ_Y",
         "                                   │        E>               <E   2S   │    2   │   2J   │      =Sma =     1M   │                  : │    3   │        │        ",
-        "                     {────} {────} ┴ {────}        = SPł=       {────} ┼ {────} ┼ {────} ┼────: {────} ┬ {────} ┤                  : ├ {────} ┤        │        '§'§'§'KJw_Z'§'Sk_D'Sk_X'SDn_Z'SDn_R'SDN1_F'SDn_C'Ju_G'sma_O'§'SMA_B'Dra_C'DP1_H3'DP_B3",
+        "                     {────} {────} ┴───────        = SPł=       {────} ┼ {────} ┼ {────} ┼────: {────} ┬ {────} ┤                  : ├ {────} ┤        │        '§'KJw_Z'§'Sk_E'Sk_X'SDn_Z'SDn_R'SDN1_F'SDn_C'Ju_G'sma_O'§'SMA_B'Dra_C'DP1_H3'DP_B3",
         "                                                                       ┼ {────} ┼ 4           :        │   2M   │         2P       : │    2   │        │   2Z   'SDn_S'SDn1_G",
         "                                                                       ├ {────} ┤ 6  = Ju =   : {────} ┼ {────} ┼────── {────} ──────┼ {────} ┼ {────} ┴ {────} 'SDn_T'SDn1_H'§'SMA_H'SMA_B2'Dra_D'Dra_K'DP1_K'DP1_H'DP_C'§'DGHK_L'DGHK_H'DZ_Z",
         "                                     = Bo =                            ├ {────} ┤ 8           : {────} ┘   2S   │                  : ├ {────} ┼ 4               'SDn_U'SDn1_J'§'SMA_G'§'DP_D",
