@@ -147,7 +147,7 @@ function initCoords() {
 
 function initCnv() {
     cnv = document.getElementById("cnv");
-    ctx = cnv.getContext("2d");
+    ctx = cnv.getContext("2d", { alpha: false });
 
     cnv.style.position = "absolute";
 
@@ -287,6 +287,10 @@ async function replay() {
 }
 
 function drawCanvas(data) {
+
+    if (document.hidden)
+        return;
+
     ctx.font = "normal " + textSize + "px monospace";
     ctx.textBaseline = "top";
 
