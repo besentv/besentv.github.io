@@ -150,22 +150,21 @@ function initCnv() {
     ctx = cnv.getContext("2d", { alpha: false });
 
     cnv.style.position = "absolute";
-
-    if (window.innerWidth >= window.innerHeight * screenRatio) { // Using a larger monitor
-        cnv.style.height = window.innerHeight;
-        cnv.style.width = window.innerHeight * screenRatio;
-    } else { // Using a thinner monitor
-        cnv.width = window.innerWidth;
-        cnv.height = window.innerWidth / screenRatio;
-    }
-
-    ctx.width = screenWidth;
-    ctx.height = screenHeight;
-
-    cnv.width = screenWidth;
-    cnv.height = screenHeight;
-
     document.body.style.overflow = 'hidden';
+
+    cnv.height = window.innerHeight;
+    cnv.width = window.innerWidth;
+
+
+    let xRatio = (window.innerWidth) / screenWidth;
+    let yRatio = (window.innerHeight) / screenHeight;
+
+    let scaleFactor = Math.min(xRatio, yRatio);
+    let xOffset = ((window.innerWidth) - screenWidth * scaleFactor) / 2;
+    let yOffset = ((window.innerHeight) - screenHeight * scaleFactor) / 2;
+
+    ctx.translate(xOffset, yOffset + 8); // Add some space at the top.
+    ctx.scale(scaleFactor, scaleFactor);
 }
 
 async function initServersList() {
@@ -288,8 +287,8 @@ async function replay() {
 
 function drawCanvas(data) {
 
-    if (document.hidden)
-        return;
+    cnv = document.getElementById("cnv");
+    ctx = cnv.getContext("2d", { alpha: false });
 
     ctx.font = "normal " + textSize + "px monospace";
     ctx.textBaseline = "top";
@@ -459,17 +458,12 @@ function drawScanLines() {
 }
 
 function resizeMonitor() {
-    let cnv = document.getElementById("cnv");
-    const clientScreenRatio = window.innerWidth / window.innerHeight;
-    if (clientScreenRatio < screenRatio) { // Let's have black bars on top and bottom, for a cinematic look! ...on vertical screns, probably! Yaaaay!
-        cnv.style.width = window.innerWidth + "px";
-        cnv.style.height = window.innerWidth / screenRatio + "px";
-    } else { // In this case, we'll have vertical black bars
-        cnv.style.height = window.innerHeight + "px";
-        cnv.style.width = window.innerHeight * screenRatio + "px";
-    }
-    cnv.style.left = (window.innerWidth - cnv.clientWidth) / 2 + "px"
+    initCnv();
+    updateTrainDescriber();
 }
+
+document.addEventListener("DOMContentLoaded", resizeMonitor);
+window.onresize = resizeMonitor;
 
 function flipLayouts() {
     if (isCurrentlyFlipped == settings.flipped) {
@@ -530,9 +524,6 @@ function flipLayouts() {
     initCoords();
     updateTrainDescriber();
 }
-
-document.addEventListener("DOMContentLoaded", resizeMonitor);
-window.onresize = resizeMonitor;
 
 function changeSetting(x) {
     if (area != "Settings") {
