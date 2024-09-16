@@ -432,7 +432,7 @@ function drawTrain(number = null, x, y, drawBoundingBox = true, maxLength = 6) {
         }
     }
     for (let char in n) {
-        ctx.fillText(n[char], textSize * (x + 1 * char) / textSizeRatio * textMargin, textSize * y * textMargin);
+        ctx.fillText(n[char], textSize * (x + 1 * char) / textSizeRatio * textMargin, textSize * y * textMargin + 2);
     }
 }
 
