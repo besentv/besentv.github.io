@@ -618,7 +618,7 @@ document.addEventListener("keydown", keyboard);
 
 const menu = [
     "Keyboard shortcuts:  [1] L001_KO_Zw  [2] L004_Zw_Gr  [3] L062_SG_Tl  [4] L001_Zy_WSD                                                                                          ",
-    "                     S[e]ttings                                                                               SRTD - SimRail Train Describer custom - v.24-09-12",
+    "                     S[e]ttings                                                                               SRTD - SimRail Train Describer custom - v.24-09-24",
 ];
 
 // If a train is at >5km from the next signal, we receive no information.
