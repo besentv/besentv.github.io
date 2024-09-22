@@ -288,9 +288,6 @@ async function replay() {
 
 function drawCanvas(data) {
 
-    if (document.hidden)
-        return;
-
     ctx.font = "normal " + textSize + "px monospace";
     ctx.textBaseline = "top";
 
