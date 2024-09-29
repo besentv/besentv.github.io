@@ -618,7 +618,7 @@ document.addEventListener("keydown", keyboard);
 
 const menu = [
     "Keyboard shortcuts:  [1] L001_KO_Zw  [2] L004_Zw_Gr  [3] L062_SG_Tl  [4] L001_Zy_WSD                                                                                          ",
-    "                     S[e]ttings                                                                               SRTD - SimRail Train Describer custom - v.24-09-24",
+    "                     S[e]ttings                                                                               SRTD - SimRail Train Describer custom - v.24-09-29",
 ];
 
 // If a train is at >5km from the next signal, we receive no information.
@@ -659,7 +659,8 @@ const missingSignals = {
     "fake96": ["fake6"],
     "fake900": ["fake12", "fake13"],
     "fake901": ["fake11"],
-    "fake902": ["Zes_A"]
+    "fake902": ["Zes_A"],
+    "fake903": ["Cz_Z"]
 };
 
 const signalsLeadingToTheBackrooms = ["Cz_Z", "fake3", "fake11", "fake12", "fake13", "fake2", "fake4", "fake6", "l137_ktc_u1", "l137_ktc_u2", "Mi_L", "My_C", "sma_O", "Ssc_B", "Ssc_D", "Zes_A", "Zy_B"];
