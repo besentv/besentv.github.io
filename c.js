@@ -587,6 +587,9 @@ function keyboard(e) {
             break;
         case "4":
             setAreaTo = 'L001_Zy_WSD';
+            break;
+        case "5":
+            setAreaTo = 'L0171_L0131';
             break;   
         case "e":
             setAreaTo = "Settings";
@@ -615,11 +618,6 @@ function keyboard(e) {
 }
 
 document.addEventListener("keydown", keyboard);
-
-const menu = [
-    "Keyboard shortcuts:  [1] L001_KO_Zw  [2] L004_Zw_Gr  [3] L062_SG_Tl  [4] L001_Zy_WSD                                                                                          ",
-    "                     S[e]ttings                                                                               SRTD - SimRail Train Describer custom - v.24-09-29",
-];
 
 // If a train is at >5km from the next signal, we receive no information.
 // However, since we know what the last signal was, we can at least make an educated guess... sometimes.
@@ -660,7 +658,9 @@ const missingSignals = {
     "fake900": ["fake12", "fake13"],
     "fake901": ["fake11"],
     "fake902": ["Zes_A"],
-    "fake903": ["Cz_Z"]
+    "fake903": ["Cz_Z"],
+    "fake904": ["Ssc_B"],
+    "fake905": ["sma_0", "sma_P"]
 };
 
 const signalsLeadingToTheBackrooms = ["Cz_Z", "fake3", "fake11", "fake12", "fake13", "fake2", "fake4", "fake6", "l137_ktc_u1", "l137_ktc_u2", "Mi_L", "My_C", "sma_O", "Ssc_B", "Ssc_D", "Zes_A", "Zy_B"];
