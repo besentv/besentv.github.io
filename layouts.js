@@ -370,5 +370,5 @@ layouts = {
 
 const menu = [
     "Keyboard shortcuts:  [1] L001_KO_Zw  [2] L004_Zw_Gr  [3] L062_SG_Tl  [4] L001_Zy_WSD  [5] L171_L131                                                             ",
-    "                     S[e]ttings                                                                               SRTD - SimRail Train Describer custom - v.24-11-05",
+    "                     S[e]ttings                                                                               SRTD - SimRail Train Describer custom - v.24-11-11",
 ];
