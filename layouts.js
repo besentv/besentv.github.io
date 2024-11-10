@@ -189,8 +189,8 @@ layouts = {
         "                                                                           23 └ {────} ┘                                                                        'WSD_J23'WSD_K23",
         "                                                                                                                                                                "
     ],
-    L0171_L0131: [
-        " L0171_L0131                                 9 ├ {────} ┐                                                                                                       'SG_N9'SG_H9",
+    L171_L131: [
+        " L171_L131                                   9 ├ {────} ┐                                                                                                       'SG_N9'SG_H9",
         "                                             7 ├ {────} ┤                                                                                                       'SG_N7'SG_H7",
         "                                             5 ├ {────} ┤                                                                                                       'SG_N5'SG_H5",
         " = KZ =                                      3 ├ {────} ┤                   =  B =                                                                              'SG_N3'SG_H3",
@@ -369,6 +369,6 @@ layouts = {
 }
 
 const menu = [
-    "Keyboard shortcuts:  [1] L001_KO_Zw  [2] L004_Zw_Gr  [3] L062_SG_Tl  [4] L001_Zy_WSD  [5] L0171_L0131                                                           ",
+    "Keyboard shortcuts:  [1] L001_KO_Zw  [2] L004_Zw_Gr  [3] L062_SG_Tl  [4] L001_Zy_WSD  [5] L171_L131                                                             ",
     "                     S[e]ttings                                                                               SRTD - SimRail Train Describer custom - v.24-11-05",
 ];
