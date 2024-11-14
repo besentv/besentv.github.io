@@ -495,7 +495,8 @@ function flipLayouts() {
                 .replaceAll("├", "þ").replaceAll("┤", "├").replaceAll("þ", "┤")
                 .replaceAll("┬", "þ").replaceAll("┴", "┬").replaceAll("þ", "┴")
                 .replaceAll("┌", "þ").replaceAll("┘", "┌").replaceAll("þ", "┘")
-                .replaceAll("└", "þ").replaceAll("┐", "└").replaceAll("þ", "┐");
+                .replaceAll("└", "þ").replaceAll("┐", "└").replaceAll("þ", "┐")
+                .replaceAll("▶", "þ").replaceAll(" ◀", "▶ ").replaceAll(" þ","◀ ");
             let regex = /^([a-zA-Z0-9\Ł\ł\_]+)$/;
             let currentlyOnAStringThatNeedsToBeReverseFlipped = false;
             let stringsThatNeedsToBeReverseFlippedStartsAtId = 0;
