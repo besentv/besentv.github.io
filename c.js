@@ -584,13 +584,13 @@ function keyboard(e) {
             setAreaTo = "L004_Zw_Gr";
             break;
         case "3":
-            setAreaTo = "L062_SG_Tl";
-            break;
-        case "4":
             setAreaTo = 'L001_Zy_WSD';
             break;
-        case "5":
+        case "4":
             setAreaTo = 'L171_L131';
+            break;
+        case "5":
+            setAreaTo = "L062_SG_Tl";
             break;   
         case "e":
             setAreaTo = "Settings";
