@@ -333,7 +333,7 @@ layouts = {
         "                                                                                                                                                                ",
         "                                                                       FLIPPED = {────}                                                                         'flipped",
         "                                                                                                                                                                ",
-        "                                                                   SHOW DELAYS = {────}                                                                         'showDelays",
+        "                                                              SHOW TRAIN SPEED = {────}                                                                         'showTrainSpeed",
         "                                                                                                                                                                ",
         "                                                                                                                                                                ",
         "                                                                                                                                                                ",

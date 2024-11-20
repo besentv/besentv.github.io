@@ -13,17 +13,19 @@ var settings = {
     colour: "grn",
     drawScanLines: true,
     flipped: false,
+    showTrainSpeed: false,
 
     loggingSignalNames: false,
     recording: true,
-    replaying: false
+    replaying: false,
 };
 var selectedSetting = Object.keys(settings)[0];
 var availableSettings = {
     server: [],
     colour: ["grn", "wht", "org", "gry", "red", "blu"],
     drawScanLines: [true, false],
-    flipped: [false, true]
+    flipped: [false, true],
+    showTrainSpeed: [false, true],
 };
 
 const coloursPalette = {
@@ -39,6 +41,7 @@ const serversListUrl = "https://panel.simrail.eu:8084/servers-open";
 const constUrl = "https://panel.simrail.eu:8084/trains-open?serverCode=";
 
 var coordinates = {};
+var signalDirections = {};
 
 var loggedSignalNames = {};
 var recorded = [];
@@ -111,6 +114,7 @@ function initCoords() {
     for (let id in layouts) {
         logUndefinedSignals = [];
         coordinates[id] = {};
+        signalDirections[id] = {};
         for (let row in layouts[id]) {
             let signalsList = layouts[id][row].split("'");
             let signalId = 1;
@@ -120,6 +124,7 @@ function initCoords() {
                     case "}":
                         for (let signalName of ("" + signalsList[signalId]).split("%")) {
                             coordinates[id][signalName] = [layouts[id][row][char] == "}" ? char - 5 : char * 1, row * 1];
+                            signalDirections[id][signalName] = layouts[id][row][char] == "}" ? 1 : 0;
                             if (signalName != "§" && id != "Settings" && !allSignals.includes(signalName)) {
                                 if (signalName == "undefined") {
                                     logUndefinedSignals.push([row, char]);
@@ -327,7 +332,9 @@ function getTrainsCoords(data) {
             if (Object.keys(coordinates[area]).includes(nextSignal)) {
                 trainsToDraw.push([
                     train.TrainNoLocal,
-                    ...coordinates[area][nextSignal]
+                    ...coordinates[area][nextSignal],
+                    train.TrainData.Velocity,
+                    signalDirections[area][nextSignal]
                 ]);
                 distancesFromTrainsToSignals.push({
                     signalName: train.TrainData.SignalInFront.split("@")[0],
@@ -403,7 +410,7 @@ function drawSettings() {
     }
     for (let id of Object.keys(settings)) {
         if (coordinates.Settings[id] != undefined) {
-            drawTrain(writeCoolSettingName(settings[id], id == selectedSetting), ...coordinates.Settings[id], id == selectedSetting, 8);
+            drawNumberBox(writeCoolSettingName(settings[id], id == selectedSetting), ...coordinates.Settings[id], null, 0, false, id == selectedSetting, 8);
         }
     }
 }
@@ -411,33 +418,52 @@ function drawSettings() {
 function drawTrains(trainsToDraw) {
     if (trainsToDraw.length) {
         for (let train of trainsToDraw) {
-            drawTrain(...train);
+            drawNumberBox(...train);
+
+            if (settings.showTrainSpeed)
+                drawNumberBox(...createSpeedBoxFromTrain(train), true, true, 3);
         }
     }
 }
 
-function drawTrain(number = null, x, y, drawBoundingBox = true, maxLength = 6) {
-    if (number === null) {
-        return;
-    }
+function createSpeedBoxFromTrain(train)
+{
+    let speedBox = train;
+    let x = train[1];
+    let y = train[2];
+    speedBox[1] = (train[4] === 1 ? (speedBox[1] = x + 4) : (x - 1));
+    speedBox[2] = y - 1;
+
+    return speedBox;
+}
+
+function drawNumberBox(number = null, x, y, speed = -1, signalDirection = 0, isSpeedBox = false, drawBoundingBox = true, maxLength = 6) {
+
+    if (isSpeedBox)
+        number = speed.toFixed(0);
+
     let n = number + "";
     ctx.fillStyle = drawBoundingBox ? coloursPalette[settings.colour][1] : coloursPalette[settings.colour][0];
     ctx.fillRect(x * textSize / textSizeRatio * textMargin, y * textSize * textMargin, textSize / textSizeRatio * textMargin * maxLength, textSize * textMargin);
     ctx.fillStyle = drawBoundingBox ? coloursPalette[settings.colour][0] : coloursPalette[settings.colour][1];
-    for (let j = 2; j <= maxLength; j++) {
-        if (n.length < j) {
+
+    //Set the text right aligned
+    for (let i = 1; i <= maxLength; i++) {
+        if (n.length < i) {
             x++;
         }
     }
-    for (let char in n) {
-        ctx.fillText(n[char], textSize * (x + 1 * char) / textSizeRatio * textMargin, textSize * y * textMargin);
+
+    //Draw number
+    for (let i = 0; i < n.length; i++) {
+        ctx.fillText(n[i], textSize * (x + 1 * i) / textSizeRatio * textMargin, textSize * y * textMargin);
     }
 }
 
 const vitalSymbols = ["/", "-", "\\", "|"];
 var vitalSymbolId = 0;
 function drawVitalSymbol(updateVitalSymbol) {
-    drawTrain(vitalSymbols[vitalSymbolId % 4], 0, textLines - 2, false, 1);
+    drawNumberBox(vitalSymbols[vitalSymbolId % 4], 0, textLines - 2, null, 0, false, false, 1);
     if (updateVitalSymbol) {
         vitalSymbolId++;
     }
