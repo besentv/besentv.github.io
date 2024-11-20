@@ -13,17 +13,19 @@ var settings = {
     colour: "grn",
     drawScanLines: true,
     flipped: false,
+    showDelays: false,
 
     loggingSignalNames: false,
     recording: true,
-    replaying: false
+    replaying: false,
 };
 var selectedSetting = Object.keys(settings)[0];
 var availableSettings = {
     server: [],
     colour: ["grn", "wht", "org", "gry", "red", "blu"],
     drawScanLines: [true, false],
-    flipped: [false, true]
+    flipped: [false, true],
+    showDelays: [false, true]
 };
 
 const coloursPalette = {
@@ -166,6 +168,8 @@ function initCnv() {
     cnv.height = screenHeight;
 
     document.body.style.overflow = 'hidden';
+
+    cnv.addEventListener("touchmove", touchmove);
 }
 
 async function initServersList() {
@@ -204,7 +208,7 @@ function polishData(data) {
         delete data.data[i].Type;
         delete data.data[i].Vehicles;
         delete data.data[i].id;
-        delete data.data[i].TrainData.ControlledBySteamID;
+        //delete data.data[i].TrainData.ControlledBySteamID;
     }
     return data;
 }
@@ -327,7 +331,8 @@ function getTrainsCoords(data) {
             if (Object.keys(coordinates[area]).includes(nextSignal)) {
                 trainsToDraw.push([
                     train.TrainNoLocal,
-                    ...coordinates[area][nextSignal]
+                    ...coordinates[area][nextSignal],
+                    train.TrainData.Velocity
                 ]);
                 distancesFromTrainsToSignals.push({
                     signalName: train.TrainData.SignalInFront.split("@")[0],
@@ -403,7 +408,7 @@ function drawSettings() {
     }
     for (let id of Object.keys(settings)) {
         if (coordinates.Settings[id] != undefined) {
-            drawTrain(writeCoolSettingName(settings[id], id == selectedSetting), ...coordinates.Settings[id], id == selectedSetting, 8);
+            drawTrain(writeCoolSettingName(settings[id], id == selectedSetting), ...coordinates.Settings[id], null, id == selectedSetting, 8);
         }
     }
 }
@@ -416,28 +421,47 @@ function drawTrains(trainsToDraw) {
     }
 }
 
-function drawTrain(number = null, x, y, drawBoundingBox = true, maxLength = 6) {
+function drawTrain(number = null, x, y, speed, drawBoundingBox = true, maxLength = 6) {
+
+    const speedLength = 3;
+
     if (number === null) {
         return;
     }
     let n = number + "";
     ctx.fillStyle = drawBoundingBox ? coloursPalette[settings.colour][1] : coloursPalette[settings.colour][0];
     ctx.fillRect(x * textSize / textSizeRatio * textMargin, y * textSize * textMargin, textSize / textSizeRatio * textMargin * maxLength, textSize * textMargin);
+
+    if (speed != null) {
+        let test = (x + maxLength - 0.5) * textSize / textSizeRatio * textMargin;
+        ctx.fillRect(test, (y-1) * textSize * textMargin, 
+                        textSize / textSizeRatio * textMargin * speedLength, textSize * textMargin);
+    }
     ctx.fillStyle = drawBoundingBox ? coloursPalette[settings.colour][0] : coloursPalette[settings.colour][1];
+    if (speed != null) {
+        let s = speed.toFixed(0);
+        for (let i = 0; i < s.length; i++) {
+            let test2 = ((x + maxLength-0.5) + (1 * i)) * textSize / textSizeRatio * textMargin;
+            ctx.fillText(s[i], test2, textSize * (y-1) * textMargin);
+        }
+    }
+
+    //Sets the text right aligned
     for (let j = 2; j <= maxLength; j++) {
         if (n.length < j) {
             x++;
         }
     }
-    for (let char in n) {
-        ctx.fillText(n[char], textSize * (x + 1 * char) / textSizeRatio * textMargin, textSize * y * textMargin);
+    for (let i = 0; i < n.length; i++) {
+        ctx.fillText(n[i], textSize * (x + 1 * i) / textSizeRatio * textMargin, textSize * y * textMargin);
     }
+    //ctx.fillText(n, textSize * (x + 1 * char) / textSizeRatio * textMargin, textSize * y * textMargin);
 }
 
 const vitalSymbols = ["/", "-", "\\", "|"];
 var vitalSymbolId = 0;
 function drawVitalSymbol(updateVitalSymbol) {
-    drawTrain(vitalSymbols[vitalSymbolId % 4], 0, textLines - 2, false, 1);
+    drawTrain(vitalSymbols[vitalSymbolId % 4], 0, textLines - 2, null, false, 1);
     if (updateVitalSymbol) {
         vitalSymbolId++;
     }
@@ -619,6 +643,9 @@ function keyboard(e) {
 }
 
 document.addEventListener("keydown", keyboard);
+
+function touchmove(event) {
+}
 
 // If a train is at >5km from the next signal, we receive no information.
 // However, since we know what the last signal was, we can at least make an educated guess... sometimes.
