@@ -14,6 +14,7 @@ var settings = {
     drawScanLines: true,
     flipped: false,
     showTrainSpeed: false,
+    showNextSignalSpeed: false,
 
     loggingSignalNames: false,
     recording: true,
@@ -26,6 +27,7 @@ var availableSettings = {
     drawScanLines: [true, false],
     flipped: [false, true],
     showTrainSpeed: [false, true],
+	showNextSignalSpeed: [false, true],
 };
 
 const coloursPalette = {
@@ -34,7 +36,8 @@ const coloursPalette = {
     "org": ["#000", "#E73"],
     "gry": ["#ccc", "#000"],
     "red": ["#000", "#F00"],
-    "blu": ["#000", "#00F"]
+    "blu": ["#000", "#00F"],
+    "yel": ["#000", "#FF0"],
 }
 
 const serversListUrl = "https://panel.simrail.eu:8084/servers-open";
@@ -322,6 +325,21 @@ function drawCanvas(data) {
     }
 }
 
+function getTrainBackground(signalSpeed = 999999, distanceToSignalInFront) {
+    switch  (settings.showNextSignalSpeed) {
+        case ((distanceToSignalInFront > 2500) || (distanceToSignalInFront == 0)):
+            return null; 
+        case (signalSpeed > 250):
+            return "grn";
+        case (signalSpeed > 99):
+            return "yel";
+        case (signalSpeed > 39):
+            return "org";
+        default:
+            return "red";
+    }
+}
+
 function getTrainsCoords(data) {
     let trainsToDraw = [];
     let distancesFromTrainsToSignals = [];
@@ -330,11 +348,14 @@ function getTrainsCoords(data) {
         if (train.TrainData.SignalInFront != null) {
             let nextSignal = train.TrainData.SignalInFront.split("@")[0];
             if (Object.keys(coordinates[area]).includes(nextSignal)) {
+                let trainBackgroundColour = getTrainBackground(train.TrainData.SignalInFrontSpeed, train.TrainData.DistanceToSignalInFront);
+
                 trainsToDraw.push([
                     train.TrainNoLocal,
                     ...coordinates[area][nextSignal],
                     train.TrainData.Velocity,
-                    signalDirections[area][nextSignal]
+                    signalDirections[area][nextSignal],
+                    trainBackgroundColour,
                 ]);
                 distancesFromTrainsToSignals.push({
                     signalName: train.TrainData.SignalInFront.split("@")[0],
@@ -410,7 +431,7 @@ function drawSettings() {
     }
     for (let id of Object.keys(settings)) {
         if (coordinates.Settings[id] != undefined) {
-            drawNumberBox(writeCoolSettingName(settings[id], id == selectedSetting), ...coordinates.Settings[id], null, 0, false, id == selectedSetting, 8);
+            drawNumberBox(writeCoolSettingName(settings[id], id == selectedSetting), ...coordinates.Settings[id], 0, 0, null, false, id == selectedSetting, 8);
         }
     }
 }
@@ -437,15 +458,18 @@ function createSpeedBoxFromTrain(train)
     return speedBox;
 }
 
-function drawNumberBox(number = null, x, y, speed = -1, signalDirection = 0, isSpeedBox = false, drawBoundingBox = true, maxLength = 6) {
+function drawNumberBox(number = null, x, y, speed = -1, signalDirection = 0, trainBackgroundColour = null, isSpeedBox = false, drawBoundingBox = true, maxLength = 6) {
+
+    if ((trainBackgroundColour === null) || ((settings.showTrainSpeed) && (isSpeedBox === false)))
+        trainBackgroundColour = settings.colour;
 
     if (isSpeedBox)
         number = speed.toFixed(0);
 
     let n = number + "";
-    ctx.fillStyle = drawBoundingBox ? coloursPalette[settings.colour][1] : coloursPalette[settings.colour][0];
+    ctx.fillStyle = drawBoundingBox ? coloursPalette[trainBackgroundColour][1] : coloursPalette[trainBackgroundColour][0];
     ctx.fillRect(x * textSize / textSizeRatio * textMargin, y * textSize * textMargin, textSize / textSizeRatio * textMargin * maxLength, textSize * textMargin);
-    ctx.fillStyle = drawBoundingBox ? coloursPalette[settings.colour][0] : coloursPalette[settings.colour][1];
+    ctx.fillStyle = drawBoundingBox ? coloursPalette[trainBackgroundColour][0] : coloursPalette[trainBackgroundColour][1];
 
     //Set the text right aligned
     for (let i = 1; i <= maxLength; i++) {
@@ -463,7 +487,7 @@ function drawNumberBox(number = null, x, y, speed = -1, signalDirection = 0, isS
 const vitalSymbols = ["/", "-", "\\", "|"];
 var vitalSymbolId = 0;
 function drawVitalSymbol(updateVitalSymbol) {
-    drawNumberBox(vitalSymbols[vitalSymbolId % 4], 0, textLines - 2, null, 0, false, false, 1);
+    drawNumberBox(vitalSymbols[vitalSymbolId % 4], 0, textLines - 2, 0, null, false, false, 1);
     if (updateVitalSymbol) {
         vitalSymbolId++;
     }

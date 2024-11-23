@@ -213,7 +213,7 @@ layouts = {
         "                                               ├ {────} ┼ │         │    │    13   │ 1S     ├ {────} ┼ 12     │        │             1           2   │    2     'SPł1_M'SPł1_E'DS_P'DS_L",
         "                                                 = SPł=   │         │    └─ {────} ┴── E>     = DS =          │        │        ┌ {────}      {────} ┼ {────}   'SKz_N'SKz_M'Kzl_L'DTA_E1'DTA_F2'DTA_C2'DTA_A'Pmi_D",
         "                                                          │         │       = SKz=                            │    4   │   1K   │          2         │          '",
-        "                                             ┌── {────} ──┘         │                           ┌─────────────┼ {────} ┼ {────} ┼────── {────} ──────┘          'SPł1_A'SDn_W'DW_H'DW_O'DW_W'Kzl_B'Kzl_J'DTA_D",
+        "                                             ┌── {────} ──┘         │                           ┌─────────────┼ {────} ┼ {────} ┼────── {────} ──────┘          'SDn_W'SPł1_A'DW_H'DW_O'DW_W'Kzl_B'Kzl_J'DTA_D",
         "                                             │                      │                           │        2D   │    6   │   2K   │    2            =DT R5=       '",
         "                                             │      5               │                           │ ┌─── {────} ┼ {────} ┼ {────} ┴ {────}                        'Dra_J'DW_D'DW_J'DW_N'DW_X'Kzl_C'Kzl_G'DTA_E2",
         "                                             └─┬ {────} ┬ {────} ───┘                           │ │           │    8   │      = Kz =                            'SDn_N'SDn1_D'SDn_A'SKz_S",
@@ -335,7 +335,7 @@ layouts = {
         "                                                                                                                                                                ",
         "                                                              SHOW TRAIN SPEED = {────}                                                                         'showTrainSpeed",
         "                                                                                                                                                                ",
-        "                                                                                                                                                                ",
+        "                                          TRAIN COLOUR SHOWS NEXT SIGNAL SPEED = {────}                                                                         'showNextSignalSpeed",
         "                                                                                                                                                                ",
         "                                                                                                                                                                ",
         "                                                                                                                                                                ",
@@ -370,5 +370,5 @@ layouts = {
 
 const menu = [
     "Keyboard shortcuts:  [1] L001_KO_Zw  [2] L004_Zw_Gr  [3] L001_Zy_WSD  [4] L171_L131  [5] L062_SG_Tl                                                             ",
-    "                     S[e]ttings                                                                               SRTD - SimRail Train Describer custom - v.24-11-17",
+    "                     S[e]ttings                                                                               SRTD - SimRail Train Describer custom - v.24-11-23",
 ];
