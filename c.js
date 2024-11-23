@@ -13,7 +13,8 @@ var settings = {
     colour: "grn",
     drawScanLines: true,
     flipped: false,
-    showDelays: false,
+    showTrainSpeed: false,
+    showNextSignalSpeed: false,
 
     loggingSignalNames: false,
     recording: true,
@@ -25,7 +26,8 @@ var availableSettings = {
     colour: ["grn", "wht", "org", "gry", "red", "blu"],
     drawScanLines: [true, false],
     flipped: [false, true],
-    showDelays: [false, true]
+    showTrainSpeed: [false, true],
+	showNextSignalSpeed: [false, true]
 };
 
 const coloursPalette = {
@@ -34,13 +36,15 @@ const coloursPalette = {
     "org": ["#000", "#E73"],
     "gry": ["#ccc", "#000"],
     "red": ["#000", "#F00"],
-    "blu": ["#000", "#00F"]
+    "blu": ["#000", "#00F"],
+	"yel": ["#000", "#FF0"]
 }
 
 const serversListUrl = "https://panel.simrail.eu:8084/servers-open";
 const constUrl = "https://panel.simrail.eu:8084/trains-open?serverCode=";
 
 var coordinates = {};
+var signalDirections = {};
 
 var loggedSignalNames = {};
 var recorded = [];
@@ -113,6 +117,7 @@ function initCoords() {
     for (let id in layouts) {
         logUndefinedSignals = [];
         coordinates[id] = {};
+        signalDirections[id] = {};
         for (let row in layouts[id]) {
             let signalsList = layouts[id][row].split("'");
             let signalId = 1;
@@ -122,6 +127,8 @@ function initCoords() {
                     case "}":
                         for (let signalName of ("" + signalsList[signalId]).split("%")) {
                             coordinates[id][signalName] = [layouts[id][row][char] == "}" ? char - 5 : char * 1, row * 1];
+                            signalDirections[id][signalName] = [layouts[id][row][char] == "}" ? 1 : 0];
+
                             if (signalName != "§" && id != "Settings" && !allSignals.includes(signalName)) {
                                 if (signalName == "undefined") {
                                     logUndefinedSignals.push([row, char]);
@@ -320,6 +327,26 @@ function drawCanvas(data) {
         drawScanLines();
     }
 }
+function getTrainBackground(signalSpeed = 999999, distanceToSignalInFront) {
+    if  (settings.showNextSignalSpeed) {
+        if ((distanceToSignalInFront > 2500) || (distanceToSignalInFront == 0)) {
+            return null; 
+        }
+        else if (signalSpeed > 250)  {
+            return "grn";
+        }
+        else if (signalSpeed > 99)  {
+            return "yel";
+        }
+        else if (signalSpeed > 39) {
+            return "org";
+        }
+        else {
+            return "red";
+        }
+    }
+}
+
 
 function getTrainsCoords(data) {
     let trainsToDraw = [];
@@ -329,10 +356,15 @@ function getTrainsCoords(data) {
         if (train.TrainData.SignalInFront != null) {
             let nextSignal = train.TrainData.SignalInFront.split("@")[0];
             if (Object.keys(coordinates[area]).includes(nextSignal)) {
+                let trainBackgroundColour = getTrainBackground(train.TrainData.SignalInFrontSpeed, train.TrainData.DistanceToSignalInFront);	
+                
+                //console.log(signalDirection + " " + train.TrainNoLocal);
                 trainsToDraw.push([
                     train.TrainNoLocal,
                     ...coordinates[area][nextSignal],
-                    train.TrainData.Velocity
+                    train.TrainData.Velocity,
+                    trainBackgroundColour,
+                    signalDirections[area][nextSignal][0]
                 ]);
                 distancesFromTrainsToSignals.push({
                     signalName: train.TrainData.SignalInFront.split("@")[0],
@@ -408,7 +440,7 @@ function drawSettings() {
     }
     for (let id of Object.keys(settings)) {
         if (coordinates.Settings[id] != undefined) {
-            drawTrain(writeCoolSettingName(settings[id], id == selectedSetting), ...coordinates.Settings[id], null, id == selectedSetting, 8);
+            drawTrain(writeCoolSettingName(settings[id], id == selectedSetting), ...coordinates.Settings[id], null, null, 0, false, id == selectedSetting, 8);
         }
     }
 }
@@ -418,36 +450,36 @@ function drawTrains(trainsToDraw) {
         for (let train of trainsToDraw) {
             drawTrain(...train);
         }
+        
+        if (settings.showTrainSpeed) {
+            //Separate loop to ensure speed box is in foreground
+            for (let speedBox of trainsToDraw) {
+             drawTrain(...calculateSpeedCoordinates(speedBox), true, true, 3);
+            }
+        }
     }
 }
 
-function drawTrain(number = null, x, y, speed, drawBoundingBox = true, maxLength = 6) {
+function drawTrain(number = null, x, y, speed, trainBackgroundColour = null, signalDirection = 0, isSpeedBox = false, drawBoundingBox = true, maxLength = 6) {
 
-    const speedLength = 3;
+    if ((trainBackgroundColour === null) || ((settings.showTrainSpeed) && (isSpeedBox === false))) {
+        trainBackgroundColour = settings.colour;
+    }
+    if (isSpeedBox) { 
+        if (speed === null) { return; }
+        number = speed.toFixed(0);
+    }
 
     if (number === null) {
         return;
     }
     let n = number + "";
-    ctx.fillStyle = drawBoundingBox ? coloursPalette[settings.colour][1] : coloursPalette[settings.colour][0];
+    ctx.fillStyle = drawBoundingBox ? coloursPalette[trainBackgroundColour][1] : coloursPalette[trainBackgroundColour][0];
     ctx.fillRect(x * textSize / textSizeRatio * textMargin, y * textSize * textMargin, textSize / textSizeRatio * textMargin * maxLength, textSize * textMargin);
-
-    if (speed != null) {
-        let test = (x + maxLength - 0.5) * textSize / textSizeRatio * textMargin;
-        ctx.fillRect(test, (y-1) * textSize * textMargin, 
-                        textSize / textSizeRatio * textMargin * speedLength, textSize * textMargin);
-    }
-    ctx.fillStyle = drawBoundingBox ? coloursPalette[settings.colour][0] : coloursPalette[settings.colour][1];
-    if (speed != null) {
-        let s = speed.toFixed(0);
-        for (let i = 0; i < s.length; i++) {
-            let test2 = ((x + maxLength-0.5) + (1 * i)) * textSize / textSizeRatio * textMargin;
-            ctx.fillText(s[i], test2, textSize * (y-1) * textMargin);
-        }
-    }
+    ctx.fillStyle = drawBoundingBox ? coloursPalette[trainBackgroundColour][0] : coloursPalette[trainBackgroundColour][1];
 
     //Sets the text right aligned
-    for (let j = 2; j <= maxLength; j++) {
+    for (let j = 1; j <= maxLength; j++) {
         if (n.length < j) {
             x++;
         }
@@ -458,10 +490,22 @@ function drawTrain(number = null, x, y, speed, drawBoundingBox = true, maxLength
     //ctx.fillText(n, textSize * (x + 1 * char) / textSizeRatio * textMargin, textSize * y * textMargin);
 }
 
+function calculateSpeedCoordinates(speedBoxToDraw)
+{
+     let speedBox = speedBoxToDraw;
+     let x = speedBoxToDraw[1];
+     let y = speedBoxToDraw[2];
+     speedBox[1] = (speedBoxToDraw[5] === 1 ?  (speedBox[1] = x + 4) : (x - 1));
+     speedBox[2] = y - 1;
+
+     return speedBox;
+
+}
+
 const vitalSymbols = ["/", "-", "\\", "|"];
 var vitalSymbolId = 0;
 function drawVitalSymbol(updateVitalSymbol) {
-    drawTrain(vitalSymbols[vitalSymbolId % 4], 0, textLines - 2, null, false, 1);
+    drawTrain(vitalSymbols[vitalSymbolId % 4], 0, textLines - 2, null, null, 0, false, false, 1);
     if (updateVitalSymbol) {
         vitalSymbolId++;
     }
