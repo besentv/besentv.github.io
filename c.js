@@ -487,7 +487,7 @@ function drawNumberBox(number = null, x, y, speed = -1, signalDirection = 0, tra
 const vitalSymbols = ["/", "-", "\\", "|"];
 var vitalSymbolId = 0;
 function drawVitalSymbol(updateVitalSymbol) {
-    drawNumberBox(vitalSymbols[vitalSymbolId % 4], 0, textLines - 2, 0, null, false, false, 1);
+    drawNumberBox(vitalSymbols[vitalSymbolId % 4], 0, textLines - 2, null, 0, null, false, false, 1);
     if (updateVitalSymbol) {
         vitalSymbolId++;
     }
