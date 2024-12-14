@@ -642,6 +642,9 @@ function keyboard(e) {
         case "5":
             setAreaTo = "L062_SG_Tl";
             break;   
+        case "6":
+            setAreaTo = "L008_KG_Kz";
+            break;
         case "e":
             setAreaTo = "Settings";
             break;
