@@ -327,8 +327,8 @@ function drawCanvas(data) {
 
 function getTrainBackground(signalSpeed = 999999, distanceToSignalInFront) {
     switch  (settings.showNextSignalSpeed) {
-        case ((distanceToSignalInFront > 2500) || (distanceToSignalInFront == 0)):
-            return null; 
+        case (distanceToSignalInFront == 0): // Next signal out of reach (we assume it's impossible to be exactly 0m away from a signal)
+            return settings.colour; // Use current background style if speed can't be checked.
         case (signalSpeed > 250):
             return "grn";
         case (signalSpeed > 99):
@@ -458,18 +458,16 @@ function createSpeedBoxFromTrain(train)
     return speedBox;
 }
 
-function drawNumberBox(number = null, x, y, speed = -1, signalDirection = 0, trainBackgroundColour = null, isSpeedBox = false, drawBoundingBox = true, maxLength = 6) {
-
-    if ((trainBackgroundColour === null) || ((settings.showTrainSpeed) && (isSpeedBox === false)))
-        trainBackgroundColour = settings.colour;
-
-    if (isSpeedBox)
+function drawNumberBox(number = null, x, y, speed = -1, signalDirection = 0, boxBackgroundColour = null, isSpeedBox = false, drawBoundingBox = true, maxLength = 6) {
+    if (settings.showTrainSpeed && isSpeedBox) {
         number = speed.toFixed(0);
+    }
+    else boxBackgroundColour = settings.colour;
 
     let n = number + "";
-    ctx.fillStyle = drawBoundingBox ? coloursPalette[trainBackgroundColour][1] : coloursPalette[trainBackgroundColour][0];
+    ctx.fillStyle = drawBoundingBox ? coloursPalette[boxBackgroundColour][1] : coloursPalette[boxBackgroundColour][0];
     ctx.fillRect(x * textSize / textSizeRatio * textMargin, y * textSize * textMargin, textSize / textSizeRatio * textMargin * maxLength, textSize * textMargin);
-    ctx.fillStyle = drawBoundingBox ? coloursPalette[trainBackgroundColour][0] : coloursPalette[trainBackgroundColour][1];
+    ctx.fillStyle = drawBoundingBox ? coloursPalette[boxBackgroundColour][0] : coloursPalette[boxBackgroundColour][1];
 
     //Set the text right aligned
     for (let i = 1; i <= maxLength; i++) {
