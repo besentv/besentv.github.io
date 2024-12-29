@@ -39,6 +39,7 @@ const missingSignals = {
     "Gn_A": ["Sd3_J1", "Sd3_H3", "Sd3_H7", "Sd3_H9", "Sd3_H11", "Sd3_H4"],
     "Pmi_D": ["DTA_C1", "DTA_C2", "DTA_D"],
     "DTA_B": ["Pmi_B"],
+    "1830_Ko_A": ["Str_A", "Str_B"],
     "fake93": ["fake3"],
     "fake92": ["fake2"],
     "fake94": ["fake4"],
