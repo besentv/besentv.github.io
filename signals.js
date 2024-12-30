@@ -36,7 +36,7 @@ const missingSignals = {
     "Bo_L": ["Sl_E3", "Sl_E1", "Sl_E2", "Sl_E4", "Sl_E6"],
     "Sl_C": ["Bo_F11", "Bo_F9", "Bo_F7", "Bo_F5", "Bo_F3", "Bo_F1", "Bo_F2", "Bo_F4", "Bo_F6", "Bo_F8"],
     "DW_T": ["Sl_H3", "Sl_H1", "Sl_H2", "Sl_H4"],
-    "Gn_A": ["Sd3_J1", "Sd3_H3", "Sd3_H7", "Sd3_H9", "Sd3_H11", "Sd3_H4"],
+    "Gn_A": ["Sd3_H1", "Sd3_H3", "Sd3_H7", "Sd3_H9", "Sd3_H11", "Sd3_H4"],
     "Pmi_D": ["DTA_C1", "DTA_C2", "DTA_D"],
     "DTA_B": ["Pmi_B"],
     "1830_Ko_A": ["Str_A", "Str_B"],
