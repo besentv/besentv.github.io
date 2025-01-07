@@ -191,6 +191,7 @@ async function updateTrainDescriber(calledByTimer = false, data = undefined) {
         data = await getDataFromServer();
         data = polishData(data);
     }
+    addClosedTracks(data);
     drawCanvas(data);
 
     if (settings.loggingSignalNames) {
@@ -278,6 +279,24 @@ function findMissingSignals(data) {
 
 function recordTrains(data) {
     recorded.push(data);
+}
+
+function addClosedTracks(data) {
+
+    closedTrackDummy = {
+        TrainNoLocal : "00000",
+        TrainData : {
+            DistanceToSignalInFront : 1.0,
+            SignalInFront : "",
+            SignalInFrontSpeed : 0.0,
+            Velocity : 0.0,
+        }
+    };
+
+    for (let x of closedTrackSignals) {
+        closedTrackDummy.TrainData.SignalInFront = x + "@0,0-0,0";
+        data.data.push(structuredClone(closedTrackDummy));
+    }
 }
 
 async function replay() {
@@ -441,7 +460,7 @@ function drawTrains(trainsToDraw) {
         for (let train of trainsToDraw) {
             drawNumberBox(...train);
 
-            if (settings.showTrainSpeed)
+            if (settings.showTrainSpeed && train[0] != "00000")
                 drawNumberBox(...createSpeedBoxFromTrain(train), true, true, 3);
         }
     }
