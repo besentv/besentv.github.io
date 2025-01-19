@@ -18,7 +18,6 @@ var settings = {
 
     loggingSignalNames: false,
     recording: true,
-    replaying: false,
 };
 var selectedSetting = Object.keys(settings)[0];
 var availableSettings = {
@@ -47,7 +46,7 @@ var coordinates = {};
 var signalDirections = {};
 
 var loggedSignalNames = {};
-var recorded = [];
+var recorded = null;
 
 var cnv, ctx;
 
@@ -73,9 +72,7 @@ function start() {
     initServersList();
     updateTrainDescriber();
     const interval = setInterval(function () {
-        if (!settings.replaying) {
             updateTrainDescriber(true);
-        }
     }, 5000);
 }
 
@@ -197,14 +194,14 @@ async function updateTrainDescriber(calledByTimer = false, data = undefined) {
     if (settings.loggingSignalNames) {
         logSignalNames(data);
     }
-    if (calledByTimer && settings.recording) {
-        recordTrains(data);
-    }
+
+    recordTrains(data);
+
     drawVitalSymbol(calledByTimer);
 }
 
 function polishData(data) {
-    data = findMissingSignals(data);
+    data = locateTrainsWithoutSignalInFront(data);
     for (let i in data.data) {
         delete data.data[i].EndStation;
         delete data.data[i].ServerCode;
@@ -218,38 +215,45 @@ function polishData(data) {
     return data;
 }
 
-function findMissingSignals(data) {
-    if (!recorded.length) {
-        return data;
-    }
-    for (let i in data.data) {
-        if (data.data[i].TrainData.SignalInFront !== null) {
-            continue;
-        }
-        let lastSeenAtSignal = null;
+function distance (x1, y1, x2, y2) {
+    return Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2));
+}
+
+function locateTrainsWithoutSignalInFront(data)
+{
+    if (!recorded) return data;
+
+    for (let i in data.data) 
+    {
         let distanceFromLastSeenAtSignal = 0;
-        for (let train of recorded[recorded.length - 1].data) {
-            if (train.TrainNoLocal == data.data[i].TrainNoLocal) {
-                if (train.TrainData.SignalInFront != null) {
-                    lastSeenAtSignal = train.TrainData.SignalInFront;
-                    distanceFromLastSeenAtSignal = train.TrainData.DistanceToSignalInFront;
-                }
-            }
+        let lastSeenAtSignal = null;
+
+        if (data.data[i].TrainData.SignalInFront !== null) continue;
+
+        for (let train of recorded.data)
+        {
+            if (train.TrainNoLocal != data.data[i].TrainNoLocal || !train.TrainData.SignalInFront) continue;
+
+            lastSeenAtSignal = train.TrainData.SignalInFront;
+            distanceFromLastSeenAtSignal = train.TrainData.DistanceToSignalInFront;
         }
-        if (lastSeenAtSignal === null) {
-            continue;
-        }
-        if (lastSeenAtSignal.split("@")[1] == "-Infinity" || distanceFromLastSeenAtSignal > 500) {
+
+        if (!!lastSeenAtSignal && (lastSeenAtSignal.split("@")[1] == "-Infinity" || distanceFromLastSeenAtSignal > 500))
+        {
             data.data[i].TrainData.SignalInFront = lastSeenAtSignal;
-            if (distanceFromLastSeenAtSignal > 500) {
+            if (distanceFromLastSeenAtSignal > 500)
+            {
                 console.log(lastSeenAtSignal);
                 console.warn(
                     "Train %c" + data.data[i].TrainNoLocal + "%c lost track of signal %c" + lastSeenAtSignal.split("@")[0],
                     "color: #A0A0FF", "", "color: #A0A0FF"
                 );
             }
-        } else {
-            for (let signal in missingSignals) {
+        }
+        else if (!!lastSeenAtSignal)
+        {
+            for (let signal in missingSignals)
+            {
                 if (missingSignals[signal].includes(lastSeenAtSignal.split("@")[0])) {
                     data.data[i].TrainData.SignalInFront = signal + "@-Infinity";
                     console.log(
@@ -261,6 +265,33 @@ function findMissingSignals(data) {
                 // Just to avoid spamming the log with trains that went missing for a good reason:
                 if (signalsLeadingToTheBackrooms.includes(lastSeenAtSignal.split("@")[0])) {
                     data.data[i].TrainData.SignalInFront = lastSeenAtSignal;
+                }
+            }
+        }
+
+        //Last resort: Try finding the train by coordinates.
+        if (!data.data[i].TrainData.SignalInFront)
+        {
+            let lat = data.data[i].TrainData.Latititute;
+            let long = data.data[i].TrainData.Longitute;
+            //console.log("Checking train " + data.data[i].TrainNoLocal + " by lat " + lat + " long " + long);
+
+            for (let signal in missingSignalsByGPS)
+            {
+                let distAB = Math.round(distance(...missingSignalsByGPS[signal]) * 1000000) / 1000000;
+                let distAC = distance(missingSignalsByGPS[signal][0], missingSignalsByGPS[signal][1], lat, long);
+                let distBC = distance(lat, long, missingSignalsByGPS[signal][2], missingSignalsByGPS[signal][3]);
+                let sumDist = Math.round((distAC + distBC) * 1000000) / 1000000;
+                //console.log("distAB " + distAB + " distAC " + distAC + " distBC " + distBC + " sum " + sumDist);
+
+                if (distAB == sumDist)
+                {
+                    data.data[i].TrainData.SignalInFront = signal + "@-Infinity";
+                    console.log(
+                        "Train %c" + data.data[i].TrainNoLocal + "%c located by coordinates, it's assumed to be heading towards signal %c" + signal,
+                        "color: #A0A0FF", "", "color: #A0A0FF"
+                    );
+                    break;
                 }
             }
         }
@@ -278,7 +309,7 @@ function findMissingSignals(data) {
 }
 
 function recordTrains(data) {
-    recorded.push(data);
+    recorded = structuredClone(data);
 }
 
 function addClosedTracks(data) {
@@ -297,20 +328,6 @@ function addClosedTracks(data) {
         closedTrackDummy.TrainData.SignalInFront = x + "@0,0-0,0";
         data.data.push(structuredClone(closedTrackDummy));
     }
-}
-
-async function replay() {
-    let sleepSetTimeout_ctrl;
-    function sleep(ms) {
-        clearInterval(sleepSetTimeout_ctrl);
-        return new Promise(resolve => sleepSetTimeout_ctrl = setTimeout(resolve, ms));
-    }
-    settings.replaying = true;
-    for (let i in recorded) {
-        updateTrainDescriber(false, recorded[i]);
-        await sleep(200);
-    }
-    settings.replaying = false;
 }
 
 function drawCanvas(data) {

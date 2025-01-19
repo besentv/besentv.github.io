@@ -16,8 +16,6 @@
 // Because now I made it in a BAD way.
 // Anyways... for example, if your last signal was Sp_B, perhaps now you're headed towards Str_B
 const missingSignals = {
-    "Str_B": ["Sp_B"],
-    "Kz_C": ["Sp_D"],
     "Sp_D": ["Str_C", "Str_D"],
     "Tl_N": ["Ch_D", "Ch_C", "Ch_K", "Ch_B"],
     "Ch_A": ["Tl_H", "Tl_J", "Tl_G", "Tl_F"],
@@ -53,6 +51,19 @@ const missingSignals = {
     "fake912": ["WGr_D"],
     "fake913": ["WGr_E"],
     "fake914": ["Gl_A", "Gl_B"]
+};
+
+// Last resort: Locate a train by GPS coordinates on a *straight* line between 2 points.
+const missingSignalsByGPS = {
+    //Right track Kz <-> Str
+    "Str_B":    [50.59297561645508,19.8827514648438, 50.59569931030273,19.88145446777344],
+    "Sp_B":     [50.48401260375977,20.0163478851318, 50.48596954345703,20.01696395874023],
+    "Kz_B":     [50.59092330932617,19.8837356567383, 50.58852767944336,19.88486480712891],
+    //Left track Kz <-> Str
+    "Sp_A":     [50.48612594604492,20.0169429779052, 50.48760604858398,20.01733016967773],
+    "Kz_C":     [50.59116363525391,19.8835544586182, 50.58345413208008,19.88721847534180],
+    //Right track Kz <-> Sd
+    "Gn_B":     [50.48158264160156,20.0156497955322, 50.49497604370117,20.01994132995605],
 };
 
 const signalsLeadingToTheBackrooms = ["Cz_Z", "fake908", "fake909", "fake910", "fake911", "fake912", "fake913", "fake914", "l137_ktc_u1", "l137_ktc_u2", "sma_O", "Ssc_B", "Ssc_D", "Zes_A", "Zy_B", "fake906", "fake907", "1998_KO_M12", "1998_KO_M10", "1998_KO_M8", "1998_KO_M6", "1998_KO_M4", "1998_KO_M2", "1998_KO_M1"];
