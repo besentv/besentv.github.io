@@ -55,13 +55,6 @@ const missingSignals = {
 
 // Last resort: Locate a train by GPS coordinates on a *straight* line between 2 points.
 const missingSignalsByGPS = {
-    //Right track Str <-> Kz
-    "Kz_B":     [50.59092330932617,19.8837356567383, 50.58852767944336,19.88486480712891],
-    "Str_B":    [50.59297561645508,19.8827514648438, 50.59569931030273,19.88145446777344],
-    "Sp_B":     [50.48401260375977,20.0163478851318, 50.48596954345703,20.01696395874023],
-    //Left track Str <-> Kz
-    "Sp_A":     [50.48612594604492,20.0169429779052, 50.48760604858398,20.01733016967773],
-    "Kz_C":     [50.59116363525391,19.8835544586182, 50.58345413208008,19.88721847534180],
 };
 
 const signalsLeadingToTheBackrooms = ["Cz_Z", "fake908", "fake909", "fake910", "fake911", "fake912", "fake913", "fake914", "l137_ktc_u1", "l137_ktc_u2", "sma_O", "Ssc_B", "Ssc_D", "Zes_A", "Zy_B", "fake906", "fake907", "1998_KO_M12", "1998_KO_M10", "1998_KO_M8", "1998_KO_M6", "1998_KO_M4", "1998_KO_M2", "1998_KO_M1"];

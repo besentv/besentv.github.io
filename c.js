@@ -274,24 +274,27 @@ function locateTrainsWithoutSignalInFront(data)
         {
             let lat = data.data[i].TrainData.Latititute;
             let long = data.data[i].TrainData.Longitute;
-            //console.log("Checking train " + data.data[i].TrainNoLocal + " by lat " + lat + " long " + long);
+            //console.log("Checking train " + data.data[i].TrainNoLocal + " by " + lat + "," + long);
 
             for (let signal in missingSignalsByGPS)
             {
-                let distAB = Math.round(distance(...missingSignalsByGPS[signal]) * 1000000) / 1000000;
-                let distAC = distance(missingSignalsByGPS[signal][0], missingSignalsByGPS[signal][1], lat, long);
-                let distBC = distance(lat, long, missingSignalsByGPS[signal][2], missingSignalsByGPS[signal][3]);
-                let sumDist = Math.round((distAC + distBC) * 1000000) / 1000000;
-                //console.log("distAB " + distAB + " distAC " + distAC + " distBC " + distBC + " sum " + sumDist);
-
-                if (distAB == sumDist)
+                for (i = 0; i < missingSignalsByGPS[signal].length; ++i)
                 {
-                    data.data[i].TrainData.SignalInFront = signal + "@-Infinity";
-                    console.log(
-                        "Train %c" + data.data[i].TrainNoLocal + "%c located by coordinates, it's assumed to be heading towards signal %c" + signal,
-                        "color: #A0A0FF", "", "color: #A0A0FF"
-                    );
-                    break;
+                    let distAB = Math.round(distance(...missingSignalsByGPS[signal][i]) * 1000000) / 1000000;
+                    let distAC = distance(missingSignalsByGPS[signal][i][0], missingSignalsByGPS[signal][i][1], lat, long);
+                    let distBC = distance(lat, long, missingSignalsByGPS[signal][i][2], missingSignalsByGPS[signal][i][3]);
+                    let sumDist = Math.round((distAC + distBC) * 1000000) / 1000000;
+                    //console.log("Signal: "+ signal +" index:  " + i + " distAB " + distAB + " distAC " + distAC + " distBC " + distBC + " sum " + sumDist);
+
+                    if (distAB == sumDist)
+                    {
+                        data.data[i].TrainData.SignalInFront = signal + "@-Infinity";
+                        console.log(
+                            "Train %c" + data.data[i].TrainNoLocal + "%c located by coordinates, it's assumed to be heading towards signal %c" + signal,
+                            "color: #A0A0FF", "", "color: #A0A0FF"
+                        );
+                        break;
+                    }
                 }
             }
         }
