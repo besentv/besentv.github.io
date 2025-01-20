@@ -9,7 +9,7 @@
 */
 
 var settings = {
-    server: "en1",
+    server: "int3",
     colour: "grn",
     drawScanLines: true,
     flipped: false,
