@@ -16,6 +16,9 @@
 // Because now I made it in a BAD way.
 // Anyways... for example, if your last signal was Sp_B, perhaps now you're headed towards Str_B
 const missingSignals = {
+    "Str_B": ["Sp_B", "Sp_A"],
+    "Kz_C": ["Sp_D", "Sp_C"],
+    "Sp_B": ["Kz_G6", "Kz_G4", "Kz_G2", "Kz_F1", "Kz_F3", "Kz_F5", "Kz_F7"],
     "Sp_D": ["Str_C", "Str_D"],
     "Tl_N": ["Ch_D", "Ch_C", "Ch_K", "Ch_B"],
     "Ch_A": ["Tl_H", "Tl_J", "Tl_G", "Tl_F"],
@@ -32,6 +35,7 @@ const missingSignals = {
     "O1_H": ["Bo_D11", "Bo_D9", "Bo_D7", "Bo_D5", "Bo_D3", "Bo_D1", "Bo_D2", "Bo_D4", "Bo_D6", "Bo_D8"],
     "Bo_B": ["O1_E", "O1_F", "O1_G"],
     "Bo_L": ["Sl_E3", "Sl_E1", "Sl_E2", "Sl_E4", "Sl_E6"],
+    "Bo_P": ["285_BG_C"],
     "Sl_C": ["Bo_F11", "Bo_F9", "Bo_F7", "Bo_F5", "Bo_F3", "Bo_F1", "Bo_F2", "Bo_F4", "Bo_F6", "Bo_F8"],
     "DW_T": ["Sl_H3", "Sl_H1", "Sl_H2", "Sl_H4"],
     "Gn_A": ["Sd3_H1", "Sd3_H3", "Sd3_H7", "Sd3_H9", "Sd3_H11", "Sd3_H4"],
@@ -50,7 +54,8 @@ const missingSignals = {
     "fake911": ["WGr_C"],
     "fake912": ["WGr_D"],
     "fake913": ["WGr_E"],
-    "fake914": ["Gl_A", "Gl_B"]
+    "fake914": ["Gl_A", "Gl_B"],
+    "fake915": ["285_BG_A", "285_BG_B"],
 };
 
 // Last resort: Locate a train by GPS coordinates on a *straight* line between 2 points.
