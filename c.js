@@ -125,7 +125,7 @@ function initCoords() {
                         for (let signalName of ("" + signalsList[signalId]).split("%")) {
                             coordinates[id][signalName] = [layouts[id][row][char] == "}" ? char - 5 : char * 1, row * 1];
                             signalDirections[id][signalName] = layouts[id][row][char] == "}" ? 1 : 0;
-                            if (signalName != "§" && id != "Settings" && !allSignals.includes(signalName)) {
+                            if (signalName != "§" && id != "Settings" && !(allSignals.includes(signalName) || fakeSignals.includes(signalName))) {
                                 if (signalName == "undefined") {
                                     logUndefinedSignals.push([row, char]);
                                 } else {
