@@ -56,6 +56,9 @@ const missingSignals = {
     "fake913": ["WGr_E"],
     "fake914": ["Gl_A", "Gl_B"],
     "fake915": ["285_BG_A", "285_BG_B"],
+    "fake916": ["l139_bry_a", "l139_bry_b", "l139_bry_c"],
+    "fake917": ["My_C", "My_D"],
+    "fake918": ["l137_ktc_u1", "l137_ktc_u2"]
 };
 
 // Last resort: Locate a train by GPS coordinates on a *straight* line between 2 points.
