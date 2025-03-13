@@ -429,5 +429,5 @@ layouts = {
 
 const menu = [
         "Keyboard shortcuts:  [1] L001_KO_Zw  [2] L004_Zw_Gr  [3] L001_Zy_WSD  [4] L171_L131  [5] L062_L064_SPł_Ko                                                       ",
-        "                     [6] L008_KG_Kz   S[e]ttings                                                                                               SRTD - v.25-02-08",
+        "                     [6] L008_KG_Kz   S[e]ttings                                                                                               SRTD - v.25-03-13",
 ];

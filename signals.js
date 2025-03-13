@@ -70,7 +70,7 @@ const missingSignalsByGPS = {
 const signalsLeadingToTheBackrooms = ["Cz_Z", "WPT_fake001", "WPo_fake001", "WGr_fake001", "WGr_fake002", "WGr_fake003", "WGr_fake004", "Gl_fake001", "l137_ktc_u1", "l137_ktc_u2", "sma_O", "Ssc_B", "Ssc_D", "Zes_A", "Zy_B", "2030_KZ_fake001", "2030_KZ_fake002", "1998_KO_M12", "1998_KO_M10", "1998_KO_M8", "1998_KO_M6", "1998_KO_M4", "1998_KO_M2", "1998_KO_M1"];
 
 //Only add signals of one direction for closed tracks.
-const closedTrackSignals = ["SG_H3", "DZ_C15", "SPł1_E", "DW_M10", "SKz_K", "SDn1_E", "SDn1_G", "SDn1_L", "Dra_B", "Bo_D11", "Bo_D5", "Bo_D3", "Bo_D6", "DS_H", "DS_J", "L575_25", "Mr_C"];
+const closedTrackSignals = ["SG_H3", "DZ_C15", "SPł1_E", "DW_M10", "SKz_K", "SDn1_E", "SDn1_G", "SDn1_L", "Dra_B", "Bo_D11", "Bo_D5", "Bo_D3", "Bo_D6", "DS_H", "DS_J"];
 
 const fakeSignals = ["Zes_fake001", "Cz_fake001", "Ssc_fake001", "sma_fake001", "2030_KZ_fake001", "2030_KZ_fake002", "WPT_fake001", "WPo_fake001", "WGr_fake001", "WGr_fake002", "WGr_fake003", "WGr_fake004", "Gl_fake001", "285_BG_fake001", "l139_bry_fake001", "My_fake001", "l137_ktc_fake001"];
 
