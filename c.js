@@ -674,12 +674,15 @@ function keyboard(e) {
             setAreaTo = 'L001_Zy_WSD';
             break;
         case "4":
-            setAreaTo = 'L171_L131';
+            setAreaTo = 'L001_L017_Gr_LW';
             break;
         case "5":
+            setAreaTo = 'L171_L131';
+            break;
+        case "6":
             setAreaTo = "L062_SG_Tl";
             break;   
-        case "6":
+        case "7":
             setAreaTo = "L008_KG_Kz";
             break;
         case "e":
