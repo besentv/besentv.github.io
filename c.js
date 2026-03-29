@@ -147,6 +147,11 @@ function initCoords() {
         //if (coordinates[id].undefined != undefined) {
         //    console.warn("At least one signal is missing in layout " + id + "! The last one I found was @ ", coordinates[id].undefined)
         //}
+        for (let signal in missingSignalsByGPS)
+        {
+            if (missingSignalsByGPS[signal].length % 2 == 1)
+                console.warn("GPS fallback for signal %c" + signal + "%c needs a even number of points. Expect issues.", "color: #A0A0FF", "color: black");
+        }
     }
 }
 
@@ -215,8 +220,13 @@ function polishData(data) {
     return data;
 }
 
-function distance (x1, y1, x2, y2) {
-    return Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2));
+// Checks if point p is on the line between the points 1 and 2.
+// See: https://en.wikipedia.org/wiki/Distance_from_a_point_to_a_line#Line_defined_by_two_points
+function distancePointToLine (x1, y1, x2, y2, p_x, p_y) {
+    var numerator = Math.abs((y2 - y1)*p_x - (x2 - x1)*p_y + x2*y1 - y2*x1);
+    var denominator = Math.sqrt(Math.pow(y2 - y1, 2) + Math.pow(x2 - x1, 2));
+
+    return numerator / denominator;
 }
 
 function locateTrainsWithoutSignalInFront(data)
@@ -278,16 +288,16 @@ function locateTrainsWithoutSignalInFront(data)
 
             for (let signal in missingSignalsByGPS)
             {
-                for (i = 0; i < missingSignalsByGPS[signal].length; ++i)
+                for (let j = 0; j < missingSignalsByGPS[signal].length - 1; j += 2)
                 {
-                    let distAB = Math.round(distance(...missingSignalsByGPS[signal][i]) * 1000000) / 1000000;
-                    let distAC = distance(missingSignalsByGPS[signal][i][0], missingSignalsByGPS[signal][i][1], lat, long);
-                    let distBC = distance(lat, long, missingSignalsByGPS[signal][i][2], missingSignalsByGPS[signal][i][3]);
-                    let sumDist = Math.round((distAC + distBC) * 1000000) / 1000000;
-                    //console.log("Signal: "+ signal +" index:  " + i + " distAB " + distAB + " distAC " + distAC + " distBC " + distBC + " sum " + sumDist);
+                    let start = missingSignalsByGPS[signal][j];
+                    let end = missingSignalsByGPS[signal][j+1];
+                    let dist = distancePointToLine(start[1], start[0], end[1], end[0], long, lat);
 
-                    if (distAB == sumDist)
+                    if (dist < 0.00001)
                     {
+                        // TODO: Add mechanism to properly indentify if we aren't on the left track...
+
                         data.data[i].TrainData.SignalInFront = signal + "@-Infinity";
                         console.log(
                             "Train %c" + data.data[i].TrainNoLocal + "%c located by coordinates, it's assumed to be heading towards signal %c" + signal,

@@ -16,10 +16,6 @@
 // Because now I made it in a BAD way.
 // Anyways... for example, if your last signal was Sp_B, perhaps now you're headed towards Str_B
 const missingSignals = {
-    "Str_B": ["Sp_B", "Sp_A"],
-    "Kz_C": ["Sp_D", "Sp_C"],
-    "Sp_B": ["Kz_G6", "Kz_G4", "Kz_G2", "Kz_F1", "Kz_F3", "Kz_F5", "Kz_F7"],
-    "Sp_D": ["Str_C", "Str_D"],
     "Tl_N": ["Ch_D", "Ch_C", "Ch_K", "Ch_B"],
     "Ch_A": ["Tl_H", "Tl_J", "Tl_G", "Tl_F"],
     "Ch1_H": ["GA_D"],
@@ -101,6 +97,71 @@ const missingSignals = {
 
 // Last resort: Locate a train by GPS coordinates on a *straight* line between 2 points.
 const missingSignalsByGPS = {
+    "Sp_D":
+        [
+            // Track behind the last switch in Starzyny towards Sprowa (multiple lines)
+            [50.710357666015625, 19.80255889892578],
+            [50.70930099487305, 19.803125381469727],
+
+            [50.70930099487305, 19.803125381469727],
+            [50.70692443847656, 19.804393768310547],
+
+            [50.70692443847656, 19.804393768310547],
+            [50.70602035522461, 19.80487823486328],
+
+            //Right track after Starzyny towards Sprowa around km 29-26.
+            [50.68059539794922, 19.817197799682617],
+            [50.6585578918457, 19.821992874145508],
+        ],
+    "Str_B":
+        [
+            // Track after last switch in Sprowa towards Starzyny (multiple lines)
+            [50.591407775878906, 19.883502960205078],
+            [50.59391784667969, 19.88230323791504],
+
+            [50.59391784667969, 19.88230323791504],
+            [50.59642791748047, 19.8811092376709],
+
+            [50.59642791748047, 19.8811092376709],
+            [50.59893798828125, 19.879913330078125],
+
+            // Right track after Sprowa towards Starzyny around km 20-24.
+            [50.611602783203125, 19.870574951171875],
+            [50.636383056640625, 19.836835861206055],
+        ],
+    "Kz_C":
+        [   // Right track between switches in Sprowa towards Kozłów
+            [50.5922737121582, 19.883024215698242],
+            [50.58951950073242, 19.884336471557617],
+
+            // Right track after switches in Sprowa towards Kozłów
+            [50.58951950073242, 19.884336471557617],
+            [50.58779525756836, 19.885154724121094],
+
+            [50.58779525756836, 19.885154724121094],
+            [50.5856819152832, 19.886159896850586],
+
+            // Right track Km 12-9 from Sprowa towards Kozłów
+            [50.552886962890625, 19.93021583557129],
+            [50.541385650634766, 19.942432403564453],
+
+            [50.541385650634766, 19.942432403564453],
+            [50.53559112548828, 19.948585510253906],
+        ],
+    "Sp_B":
+        [
+            // Track after last switch in Kozłów towards Sprowa (before bridge)
+            [50.483219146728516, 20.016094207763672],
+            [50.485023498535156, 20.016672134399414],
+
+            // Track after Kozłów towards Sprowa around entry signal Kz_B
+            [50.4865837097168, 20.01712989807129],
+            [50.48794174194336, 20.017480850219727],
+
+            // Right track after Kozłów towards Sprowa around km 5-6.
+            [50.508079528808594, 19.99846839904785],
+            [50.51164245605469, 19.978628158569336],
+        ],
 };
 
 const signalsLeadingToTheBackrooms = ["Cz_Z", "WPT_fake001", "WPo_fake001", "WGr_fake001", "WGr_fake002", "WGr_fake003", "WGr_fake004", "Gl_fake001", "l137_ktc_u1", "l137_ktc_u2", "sma_O", "Ssc_B", "Ssc_D", "Zes_A", "Zy_B", "2030_KZ_fake001", "2030_KZ_fake002", "1998_KO_M12", "1998_KO_M10", "1998_KO_M8", "1998_KO_M6", "1998_KO_M4", "1998_KO_M2", "1998_KO_M1", "113_Be_fake001", "3459_PM_L", "3459_PM_M", "3459_PM_N", "3459_PM_O", "3594_Ro_L", "3594_Ro_J", "3594_Ro_K", "2437_LM_E", "2457_LW_fake001", "5292_ZWK_fake001", "779_Di_fake001", "779_Di_fake002", "3792_Se_H", "3617_Ro_J"];
