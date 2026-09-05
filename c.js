@@ -681,10 +681,10 @@ function keyboard(e) {
             setAreaTo = "L004_Zw_Gr";
             break;
         case "3":
-            setAreaTo = 'L001_Zy_WSD';
+            setAreaTo = 'L001_L017_Gr_LW';
             break;
         case "4":
-            setAreaTo = 'L001_L017_Gr_LW';
+            setAreaTo = 'L001_Zy_WSD';
             break;
         case "5":
             setAreaTo = 'L171_L131';
