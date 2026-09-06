@@ -71,6 +71,7 @@ function start() {
     initCnv();
     initServersList();
     updateTrainDescriber();
+    markSelectedLayout();
     const interval = setInterval(function () {
             updateTrainDescriber(true);
     }, 5000);
@@ -626,6 +627,36 @@ function flipLayouts() {
     updateTrainDescriber();
 }
 
+function markSelectedLayout() {
+    function replaceAt(text, textToReplace, replacement) {
+        const index = text.indexOf(textToReplace);
+        return text.substring(0, index) + replacement + text.substring(index + textToReplace.length);
+    }
+
+    menu = [...defaultMenu];
+    
+    for (let layoutId in layouts) {
+        if (layoutId !== area)
+            continue;
+
+        if (layoutId === "Settings") {
+            layoutId = "S[e]ttings";
+        }
+
+        let menuIndex = 0;
+        for (let i = 0; i < menu.length; i++) {
+            if (menu[i].indexOf(layoutId) !== -1) {
+                menuIndex = i;
+                break;
+            }
+        }
+
+        if (menuIndex == 1)
+            menu[menuIndex] = replaceAt(menu[menuIndex], "  SRTD", "SRTD"); // 2 Spaces are removed to avoid cutting the version text of when adding 2 symbols
+        menu[menuIndex] = replaceAt(menu[menuIndex], layoutId, '(' + layoutId + ')');
+    }
+}
+
 document.addEventListener("DOMContentLoaded", resizeMonitor);
 window.onresize = resizeMonitor;
 
@@ -690,7 +721,7 @@ function keyboard(e) {
             setAreaTo = 'L171_L131';
             break;
         case "6":
-            setAreaTo = "L062_SG_Tl";
+            setAreaTo = "L062_L064_SPł_Ko";
             break;   
         case "7":
             setAreaTo = "L008_KG_Kz";
@@ -727,6 +758,7 @@ function keyboard(e) {
     if (area != setAreaTo) {
         updateTrainDescriber();
         area = setAreaTo;
+        markSelectedLayout();
     }
 }
 

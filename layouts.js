@@ -248,7 +248,7 @@ layouts = {
         "                                                                                                                                                                '",
         "                                                                                                                                                                '"
     ],
-    L062_SG_Tl: [
+    L062_L064_SPł_Ko: [
         " L062_L064_SPł_Ko                                                                         {────} ┬ 5                                     3                      '§'DS_C",
         "                                                                                          {────} ┼ 3                                ┌ {────} ┤                  '§'DS_D'Sl_H3'Sl_E3",
         "        1P        1                  = SDn=                            5         1D          1   │                 1                │    1   │                  ",
@@ -665,7 +665,9 @@ layouts = {
     ]
 }
 
-const menu = [
+const defaultMenu = [
         "Keyboard shortcuts:  [1] L001_KO_Zw  [2] L004_Zw_Gr [3] L001_L017_Gr_LW  [4] L001_Zy_WSD  [5] L171_L131  [6] L062_L064_SPł_Ko                                   ",
         "                     [7] L008_KG_Kz  [8] L014_L017_Se_Ko  [9] L001_L017_PT_LW  [0] L003_L015_L016_ZI_KU_SK  S[e]ttings                         SRTD - v.26-08-18",
 ];
+
+menu = [...defaultMenu];
